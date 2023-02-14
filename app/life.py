@@ -2,12 +2,12 @@ import pygame
 import numpy
 
 class Life:
-    def __init__(self, width = 1000, height = 500, cell_size = 20, speed = 2):
+    def __init__(self, width = 1920, height = 1080, cell_size = 10, speed = 10):
         self.width = width
         self.height = height
         self.cell_size = cell_size
         self.screen_size = width, height
-        self.screen = pygame.display.set_mode(self.screen_size)
+        self.screen = pygame.display.set_mode(self.screen_size, pygame.FULLSCREEN)
         self.x = self.height // self.cell_size
         self.y = self.width // self.cell_size
         self.speed = speed
@@ -53,9 +53,11 @@ class Life:
         for x in range (self.x):
             for y in range (self.y):
                 if cells[x,y] == 0:
-                    pygame.draw.rect(self.screen, pygame.Color('white'), ((y)*self.cell_size,(x)*self.cell_size, self.cell_size, self.cell_size))
+                    # pygame.draw.rect(self.screen, pygame.Color('white'), ((y)*self.cell_size,(x)*self.cell_size, self.cell_size, self.cell_size))
+                    pygame.draw.circle(self.screen, pygame.Color('black'), ((y)*self.cell_size+self.cell_size/2,(x)*self.cell_size+self.cell_size/2), self.cell_size/2)
                 else:
-                    pygame.draw.rect(self.screen, pygame.Color('green'), ((y)*self.cell_size,(x)*self.cell_size, self.cell_size, self.cell_size))
+                    # pygame.draw.rect(self.screen, pygame.Color('green'), ((y)*self.cell_size,(x)*self.cell_size, self.cell_size, self.cell_size))
+                    pygame.draw.circle(self.screen, pygame.Color('green'), ((y)*self.cell_size+self.cell_size/2,(x)*self.cell_size+self.cell_size/2), self.cell_size/2)
     
     def draw_grid(self):
         for y in range(self.y):
@@ -72,7 +74,7 @@ class Life:
         pygame.init()
         clock = pygame.time.Clock()
         pygame.display.set_caption('Life')
-        self.screen.fill(pygame.Color('white'))
+        self.screen.fill(pygame.Color('black'))
         self.cells = self.fill(True)
         running = True
         while running:
@@ -83,8 +85,11 @@ class Life:
                 if event.type == pygame.MOUSEBUTTONUP:
                     pos = pygame.mouse.get_pos()
                     self.click(pos)
+                elif event.type == pygame.KEYDOWN:
+                    if event.key == pygame.K_ESCAPE:
+                        pygame.quit()
             self.draw(self.cells)
-            self.draw_grid()
+            # self.draw_grid()
             pygame.display.flip()
             clock.tick(self.speed)
         pygame.quit()
